@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="table">
+        <div class="search">
+            <input type="text" placeholder="Buscar" [(ngModel)]="searchTerm">
+        </div>
+        
+        <div class="table-header">
+            <div class="header-elem">
+                <span>Id</span>
+            </div>
+            <div class="header-elem desc">
+                <span>Producto</span>
+            </div>
+            <div class="header-elem">
+                <span>Precio</span>
+            </div>
+            <div class="header-elem">
+                <span>Stock</span>
+            </div>
+        </div>
+
+        <div class="table-body" *ngIf="!loading">
+            <div  *ngFor="let item of items | filter:searchTerm; let i=index;" [ngClass]="{'diff': i%2!=0}">
+                <div class="body-elem page" [class.hide]="i < minRange-1 || i > maxRange-1" >
+                    <span>{{ item.id_producto }}</span>
+                    <span class="desc">{{ item.producto | uppercase }}</span>
+                    <span>{{ item.precio_venta | currency }}</span>
+                    <span>{{ item.stock }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="table-body loading" *ngIf="loading"></div>
+        <div class="pagination">
+            <div class="display">
+                <span>Mostrando</span>
+                <select [(ngModel)]="maxItemsPerPage" (change)="calcButtonsForPages()">
+                    <option value="{{items.length}}">{{ items.length }}</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+                <span>registros de {{items.length}} en total</span>
+            </div>
+            <div class="buttons">
+                <button><</button>
+                <a *ngFor="let p of pagesQuantity; let i=index" [class.selected]="i==selectedPage" (click)="onSelectPage(i)">{{i+1}}</a>
+                <button>></button>
+            </div>
+        </div>
+    </div>
+</div>
